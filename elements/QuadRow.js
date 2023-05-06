@@ -1,8 +1,8 @@
 import {RequestContextEvent} from "./RequestContextEvent.js"
 
 export class QuadRow extends HTMLTableRowElement {
-    static ELEMENT_IS = "tr"
-    static ELEMENT_NAME = "rdf-quad-row"
+    static ELEMENT_IS = "rdf-quad-row"
+    static ELEMENT_NAME ="tr"
 
     data
 
