@@ -98,7 +98,7 @@ export class Matches extends ContextAwareElement {
 
     /**
      * @param {Node} node
-     * @return {Quad | QuadRow}
+     * @return {Quad | HTMLTableRowElement}
      */
     static #getContainer(node) {
         if (this.#isInTable(node)) {

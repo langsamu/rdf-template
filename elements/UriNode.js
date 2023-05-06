@@ -34,7 +34,7 @@ export class UriNode extends HTMLElement {
 
     /**
      * @param {Node} node
-     * @return {Quad | QuadRow}
+     * @return {Quad | HTMLTableRowElement}
      */
     static #getQuadContainer(node) {
         if (this.#isInTable(node)) {
