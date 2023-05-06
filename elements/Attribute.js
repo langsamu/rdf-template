@@ -5,3 +5,5 @@ export class Attribute extends HTMLElement {
         this.remove()
     }
 }
+
+customElements.define("rdf-attribute", Attribute)

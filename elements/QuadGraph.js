@@ -5,3 +5,5 @@ export class QuadGraph extends ContextComponent {
         return context.graph
     }
 }
+
+customElements.define("rdf-quad-graph", QuadGraph)

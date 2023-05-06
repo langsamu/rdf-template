@@ -116,3 +116,5 @@ export class Matches extends ContextElement {
         return ["TABLE", "THEAD", "TBODY"].includes(node.parentElement.tagName)
     }
 }
+
+customElements.define("rdf-matches", Matches)

@@ -6,3 +6,5 @@ export class Value extends ContextElement {
         this.innerText = context.value
     }
 }
+
+customElements.define("rdf-value", Value)

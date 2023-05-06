@@ -96,3 +96,5 @@ class CycleError extends Error {
         this.quad = quad
     }
 }
+
+customElements.define(Quad.ELEMENT_NAME, Quad)

@@ -30,3 +30,5 @@ export class QuadRow extends HTMLTableRowElement {
             })))
     }
 }
+
+customElements.define(QuadRow.ELEMENT_IS, QuadRow, {extends: QuadRow.ELEMENT_NAME})

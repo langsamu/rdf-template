@@ -52,3 +52,5 @@ export class UriNode extends HTMLElement {
         return ["TABLE", "THEAD", "TBODY"].includes(node.parentElement.tagName)
     }
 }
+
+customElements.define(UriNode.ELEMENT_NAME, UriNode)

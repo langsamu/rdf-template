@@ -5,3 +5,5 @@ export class QuadPredicate extends ContextComponent {
         return context.predicate
     }
 }
+
+customElements.define("rdf-quad-predicate", QuadPredicate)

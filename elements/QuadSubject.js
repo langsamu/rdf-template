@@ -5,3 +5,5 @@ export class QuadSubject extends ContextComponent {
         return context.subject
     }
 }
+
+customElements.define("rdf-quad-subject", QuadSubject)

@@ -6,3 +6,5 @@ export class Type extends ContextElement {
         this.innerText = context.termType
     }
 }
+
+customElements.define("rdf-type", Type)

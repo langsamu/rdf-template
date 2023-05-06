@@ -80,3 +80,5 @@ PREFIX acl: <http://www.w3.org/ns/auth/acl#>
         e.detail.resolve(this.#data)
     }
 }
+
+customElements.define("rdf-graph", Graph)

@@ -6,3 +6,5 @@ export class Language extends ContextElement {
         this.innerText = context.language
     }
 }
+
+customElements.define("rdf-language", Language)

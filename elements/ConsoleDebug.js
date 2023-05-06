@@ -11,3 +11,5 @@ export class ConsoleDebug extends ContextElement {
         console.debug(...x)
     }
 }
+
+customElements.define("rdf-console-debug", ConsoleDebug)

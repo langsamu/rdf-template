@@ -15,3 +15,5 @@ export class ConsoleGroup extends ContextElement {
         console.groupEnd()
     }
 }
+
+customElements.define("rdf-console-group", ConsoleGroup)
