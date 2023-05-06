@@ -1,7 +1,7 @@
-import {ContextComponent} from "./ContextComponent.js"
+import {ContextComponentAwareElement} from "./ContextComponentAwareElement.js"
 
-export class QuadPredicate extends ContextComponent {
-    getComponent(context) {
+export class QuadPredicate extends ContextComponentAwareElement {
+    getContextComponent(context) {
         return context.predicate
     }
 }

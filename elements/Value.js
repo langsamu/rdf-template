@@ -1,9 +1,8 @@
-import {ContextElement} from "./ContextElement.js"
+import {Replacer} from "./Replacer.js"
 
-export class Value extends ContextElement {
-    async initializedCallback() {
-        const context = await this.getContext()
-        this.innerText = context.value
+export class Value extends Replacer {
+    getInnerText(context) {
+        return context?.value
     }
 }
 

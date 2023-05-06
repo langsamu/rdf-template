@@ -1,7 +1,7 @@
-import {ContextElement} from "./ContextElement.js"
+import {ContextAwareElement} from "./ContextAwareElement.js"
 import {RequestContextEvent} from "./RequestContextEvent.js"
 
-export class ContextComponent extends ContextElement {
+export class ContextComponentAwareElement extends ContextAwareElement {
     async connectedCallback() {
         this.addEventListener(RequestContextEvent.type, this.#onRequestContext.bind(this))
     }
@@ -14,12 +14,13 @@ export class ContextComponent extends ContextElement {
         e.stopPropagation()
 
         const context = await this.getContext()
-        const component = this.getComponent(context)
+i
+        const component = this.getContextComponent(context)
 
         e.detail.resolve(component)
     }
 
-    getComponent(context) {
+    getContextComponent(context) {
         throw "not implemented";
     }
 }

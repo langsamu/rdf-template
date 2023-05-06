@@ -1,7 +1,7 @@
-import {ContextComponent} from "./ContextComponent.js"
+import {ContextComponentAwareElement} from "./ContextComponentAwareElement.js"
 
-export class QuadSubject extends ContextComponent {
-    getComponent(context) {
+export class QuadSubject extends ContextComponentAwareElement {
+    getContextComponent(context) {
         return context.subject
     }
 }

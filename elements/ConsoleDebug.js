@@ -1,6 +1,6 @@
-import {ContextElement} from "./ContextElement.js"
+import {ContextAwareElement} from "./ContextAwareElement.js"
 
-export class ConsoleDebug extends ContextElement {
+export class ConsoleDebug extends ContextAwareElement {
     async initializedCallback() {
         const x = [await this.getContext()]
 

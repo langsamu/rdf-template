@@ -1,9 +1,9 @@
 import {Quad} from "./Quad.js"
 import {QuadRow} from "./QuadRow.js"
 import {QuadSet} from "../QuadSet.js"
-import {ContextElement} from "./ContextElement.js"
+import {ContextAwareElement} from "./ContextAwareElement.js"
 
-export class Matches extends ContextElement {
+export class Matches extends ContextAwareElement {
     static extractor = /(?<=^{)\w+(?=}$)/
 
     async initializedCallback() {
