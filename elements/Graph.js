@@ -14,7 +14,7 @@ export class Graph extends HTMLElement {
     }
 
     #onRequestCycle(e) {
-        // If event bubbled all the way up here then resolve with false to indicate no cycle.
+        // If cycle request bubbled all the way up here then resolve with false to indicate no cycle.
         e.detail.resolve(false)
     }
 

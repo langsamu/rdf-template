@@ -7,6 +7,7 @@ export class ContextComponentAwareElement extends ContextAwareElement {
     }
 
     async #onRequestContext(e) {
+        // Don't interfere with own request for context
         if (e.target === this) {
             return
         }

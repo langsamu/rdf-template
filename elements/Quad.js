@@ -17,6 +17,7 @@ export class Quad extends HTMLElement {
     }
 
     async #onRequestCycle(e) {
+        // Don't interfere with own request for cycle
         if (e.target === this) {
             return
         }
@@ -47,6 +48,7 @@ export class Quad extends HTMLElement {
     }
 
     async #onRequestContext(e) {
+        // Don't handle context request if asking for root, which should be handled by an ancestor graph element.
         if (e.detail.isRoot) {
             return
         }
