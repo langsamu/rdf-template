@@ -34,39 +34,7 @@ export class Graph extends HTMLElement {
     }
 
     #load() {
-        const rdf = `
-PREFIX : <urn:example:>
-PREFIX acp: <http://www.w3.org/ns/solid/acp#>
-PREFIX acl: <http://www.w3.org/ns/auth/acl#>
-
-:acr1
-    acp:resource :resource1 ;
-    acp:accessControl :ac1 ;
-    acp:memberAccessControl :ac1, :ac3 ;
-    :x "X"^^:dt, []
-.
-
-:acr2
-    acp:resource :resource1 ;
-    acp:accessControl :ac1 ;
-.
-
-:ac1 acp:apply :p1, :p2, :p3, :p4 .
-
-:p1
-    acp:allow acl:Read, acl:Write .
-
-:p2
-    acp:allow acl:ReadX, acl:WriteY .
-
-:p4
-    acp:deny acl:ReadZ.
-
-:matcher1
-    acp:agent :agent1 .
-
-:agent1 :x :acr1 .
-`
+        const rdf = this.querySelector("script").textContent // TODO: Filter to Turtle
 
         const dataset = new N3.Store()
         dataset.addQuads(new N3.Parser().parse(rdf))

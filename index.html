@@ -7,6 +7,44 @@
     </head>
     <body>
         <rdf-graph>
+            <script type="text/turtle">
+PREFIX :    <urn:example:>
+PREFIX acp: <http://www.w3.org/ns/solid/acp#>
+PREFIX acl: <http://www.w3.org/ns/auth/acl#>
+
+:acr1
+    acp:resource            :resource1 ;
+    acp:accessControl       :ac1 ;
+    acp:memberAccessControl :ac1, :ac3 ;
+    :x                      "X"^^:dt, [ ], "x"@en
+.
+
+:acr2
+    acp:resource      :resource1 ;
+    acp:accessControl :ac1 ;
+.
+
+:ac1
+    acp:apply :p1, :p2, :p3, :p4 .
+
+:p1
+    acp:allow   acl:Read, acl:Write ;
+    acp:matcher :matcher1 ;
+.
+
+:p2
+    acp:allow acl:ReadX, acl:WriteY .
+
+:p4
+    acp:deny acl:ReadZ .
+
+:matcher1
+    acp:agent :agent1 .
+
+:agent1
+    :x :acr1 .
+            </script>
+
             <rdf-matches data-predicate="http://www.w3.org/ns/solid/acp#resource" data-group="subject">
                 <template>
                     <fieldset>
