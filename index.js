@@ -1,8 +1,6 @@
 import "https://unpkg.com/n3/browser/n3.min.js"
 import "./elements/Graph.js"
 import "./elements/UriNode.js"
-import "./elements/Uri.js"
-import "./elements/Id.js"
 import "./elements/Value.js"
 import "./elements/Type.js"
 import "./elements/DataType.js"
