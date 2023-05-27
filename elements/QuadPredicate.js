@@ -1,8 +1,8 @@
-import {ContextComponentAwareElement} from "./ContextComponentAwareElement.js"
+class QuadPredicate extends HTMLElement {
+    initialize(graph, context, stack) {
+        super.initialize(graph, context?.predicate, stack)
+        this.replaceWithMeaningfulChildren()
 
-export class QuadPredicate extends ContextComponentAwareElement {
-    getContextComponent(context) {
-        return context.predicate
     }
 }
 

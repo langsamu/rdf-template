@@ -1,8 +1,7 @@
-import {ContextComponentAwareElement} from "./ContextComponentAwareElement.js"
-
-export class QuadGraph extends ContextComponentAwareElement {
-    getContextComponent(context) {
-        return context.graph
+class QuadGraph extends HTMLElement {
+    initialize(graph, context, stack) {
+        super.initialize(graph, context?.graph, stack)
+        this.replaceWith(...this.childNodes)
     }
 }
 

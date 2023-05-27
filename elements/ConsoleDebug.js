@@ -1,14 +1,16 @@
-import {ContextAwareElement} from "./ContextAwareElement.js"
+class ConsoleDebug extends HTMLElement {
+    initialize(graph, context, stack) {
+        super.initialize(graph, context, stack)
 
-export class ConsoleDebug extends ContextAwareElement {
-    async initializedCallback() {
-        const x = [await this.getContext()]
+        const data = [{graph, context, stack}]
 
-        if (this.dataset.message) {
-            x.unshift(this.dataset.message)
+        if (this.innerText) {
+            data.unshift(this.innerText)
         }
 
-        console.debug(...x)
+        console.debug(...data)
+
+        this.remove()
     }
 }
 

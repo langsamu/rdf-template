@@ -1,17 +1,17 @@
-import {ContextAwareElement} from "./ContextAwareElement.js"
-
-export class ConsoleGroup extends ContextAwareElement {
-    async initializedCallback() {
-        const x = [await this.getContext()]
+export class ConsoleGroup extends HTMLElement {
+    initialize(graph, context, stack) {
+        const data = [{graph, context, stack}]
 
         if (this.dataset.message) {
-            x.unshift(this.dataset.message)
+            data.unshift(this.dataset.message)
         }
 
-        console.group(...x)
-    }
+        console.group(...data)
 
-    async childrenInitializedCallback() {
+        super.initialize(graph, context, stack)
+
+        this.replaceWithMeaningfulChildren()
+
         console.groupEnd()
     }
 }

@@ -1,13 +1,23 @@
+Element.prototype.initialize = function (graph, context, stack) {
+    for (const child of [...this.children]) {
+        child.initialize(graph, context, stack)
+    }
+}
+
+const a = /^\s*$/
+Element.prototype.replaceWithMeaningfulChildren = function () {
+    this.replaceWith(...[...this.childNodes].filter(x => x.nodeType !== x.TEXT_NODE || !a.test(x.textContent)))
+}
+
+
 import "https://unpkg.com/n3/browser/n3.min.js"
 import "./elements/Graph.js"
 import "./elements/UriNode.js"
-import "./elements/Value.js"
-import "./elements/Type.js"
+import "./elements/TermValue.js"
+import "./elements/TermType.js"
 import "./elements/TermDataType.js"
-import "./elements/Language.js"
+import "./elements/TermLanguage.js"
 import "./elements/Matches.js"
-import "./elements/Quad.js"
-import "./elements/QuadRow.js"
 import "./elements/QuadSubject.js"
 import "./elements/QuadPredicate.js"
 import "./elements/QuadObject.js"

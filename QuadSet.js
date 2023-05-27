@@ -54,6 +54,6 @@ export class QuadSet extends Set {
     }
 
     static #asString(quad) {
-        return `${quad.subject?.id}-${quad.predicate?.id}-${quad.object?.id}-${quad.graph?.id}`
+        return `${quad.subject?.value}-${quad.predicate?.value}-${quad.object?.value}-${quad.graph?.value}`
     }
 }

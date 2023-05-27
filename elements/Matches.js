@@ -1,21 +1,22 @@
-import {Quad} from "./Quad.js"
-import {QuadRow} from "./QuadRow.js"
+import "https://unpkg.com/n3/browser/n3.min.js"
 import {QuadSet} from "../QuadSet.js"
-import {ContextAwareElement} from "./ContextAwareElement.js"
 
-export class Matches extends ContextAwareElement {
-    static extractor = /(?<=^{)\w+(?=}$)/
+class Matches extends HTMLElement {
+    static #extractor = /(?<=^{)\w+(?=}$)/
+    static #CYCLE_MARKER = N3.DataFactory.namedNode("urn:rdf-components:cycle-marker")
+    static #CYCLE_QUAD = N3.DataFactory.quad(
+        Matches.#CYCLE_MARKER,
+        Matches.#CYCLE_MARKER,
+        Matches.#CYCLE_MARKER,
+        Matches.#CYCLE_MARKER)
 
-    async initializedCallback() {
-        const context = await this.getContext()
-
+    initialize(graph, context, stack) {
         const s = this.#resolve(this.dataset.subject, context)
         const p = this.#resolve(this.dataset.predicate, context)
         const o = this.#resolve(this.dataset.object, context)
         const g = this.#resolve(this.dataset.graph, context)
 
-        const dataset = await this.getContext(true)
-        const quads = dataset.match(s, p, o, g)
+        const quads = graph.match(s, p, o, g)
 
         const a = document.createElement("a")
         a.setAttribute("class", this.dataset.group)
@@ -39,81 +40,84 @@ export class Matches extends ContextAwareElement {
         }
 
         if (this.dataset.template) {
-            const template = document.getElementById(this.dataset.template)
-            this.instantiate(distinctQuads, template, this)
+            const template = this.ownerDocument.getElementById(this.dataset.template)
+            this.#instantiate(graph, distinctQuads, template, this, stack)
         } else {
-            for (const template of this.#templates) {
-                this.instantiate(distinctQuads, template, template.parentNode)
+            for (const template of [...this.getElementsByTagName("TEMPLATE")]) {
+                this.#instantiate(graph, distinctQuads, template, template.parentNode, stack)
+                template.remove()
             }
         }
+
+        this.replaceWithMeaningfulChildren()
     }
 
-    get cuttingStrategy() {
-        if (!this.dataset.cut) {
-            return Quad.DEFAULT_CUTTING_STRATEGY
-        }
-
-        if (!Quad.CUTTING_STRATEGIES.includes(this.dataset.cut)) {
-            throw new Error(`Invalid cutting strategy [${this.dataset.cut}]. Allowed values: [${Quad.CUTTING_STRATEGIES}].`)
-        }
-
-        return this.dataset.cut
-    }
-
-    instantiate(quads, template, parent) {
+    #instantiate(graph, quads, template, parent, stack) {
         for (const quad of quads) {
-            const quadContainer = Matches.#getContainer(template)
-            quadContainer.data = quad
-            quadContainer.dataset.cut = this.cuttingStrategy
+            const isCycle = Matches.#isCycle(stack, quad)
+            let q = quad
+            if (isCycle) {
+                const t = "mark"
+                // const t="throw"
+                // const t = "skip"
+                switch (t) {
+                    case "skip":
+                        continue
 
-            const instance = template.content.cloneNode(true)
+                    case "throw":
+                        throw new CycleError("Cycle detected", quad)
 
-            quadContainer.appendChild(instance)
-            parent.appendChild(quadContainer)
+                    case "mark":
+                        q = Matches.#CYCLE_QUAD
+                }
+            }
 
-            // for (const element of quadContainer.querySelectorAll("*")) {
-            //     element.initializedCallback?.call(element)
-            // }
+            stack.push(q)
+
+            for (const child of [...template.content.cloneNode(true).childNodes]) {
+                parent.appendChild(child)
+
+                if (child instanceof Element) {
+                    child.initialize(graph, q, stack)
+                }
+            }
+            stack.pop()
         }
+    }
+
+    static #isCycle(stack, quad) {
+        for (const stackElement of stack) {
+            if (stackElement.equals(quad)) {
+                return true
+            }
+        }
+
+        return false
     }
 
     #resolve(s, context) {
         if (s) {
-            const x = s.match(Matches.extractor)
+            const x = s.match(Matches.#extractor)
             if (x) {
-                return context[x]
+                if (context !== null) {
+                    return context[x]
+                }
             } else {
                 return N3.DataFactory.namedNode(s)
             }
         }
     }
 
-    /**
-     * @return {Array.<HTMLTemplateElement>}
-     */
-    get #templates() {
-        // Cache template children so instantiation does not interfere with iteration. Templates might contain nested templates.
-        return [...this.getElementsByTagName("TEMPLATE")]
-    }
+}
 
-    /**
-     * @param {Node} node
-     * @return {Quad | HTMLTableRowElement}
-     */
-    static #getContainer(node) {
-        if (this.#isInTable(node)) {
-            return document.createElement(QuadRow.ELEMENT_NAME, {is: QuadRow.ELEMENT_IS})
-        } else {
-            return document.createElement(Quad.ELEMENT_NAME)
-        }
-    }
+class CycleError extends Error {
+    quad
 
-    /**
-     * @param {Node} node
-     * @return {boolean}
-     */
-    static #isInTable(node) {
-        return ["TABLE", "THEAD", "TBODY"].includes(node.parentElement.tagName)
+    constructor(message, quad) {
+        super(message)
+
+        this.name = this.constructor.name
+        this.quad = quad
     }
 }
 
