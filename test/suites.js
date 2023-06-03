@@ -565,46 +565,6 @@ PREFIX : <urn:example:>
         subject: "Console",
         tests: [
             {
-                should: "Debug empty",
-                input: `<rdf-graph>
-    <script type="text/turtle"><urn:example:s> <urn:example:p> <urn:example:o> .</script>
-    <rdf-matches data-subject="urn:example:s">
-        <template>
-            <rdf-console-debug></rdf-console-debug>
-        </template>
-    </rdf-matches>
-</rdf-graph>`,
-                output: ``
-            },
-            {
-                should: "Debug with static message",
-                input: `<rdf-graph>
-    <script type="text/turtle"><urn:example:s> <urn:example:p> <urn:example:o> .</script>
-    <rdf-matches data-subject="urn:example:s">
-        <template>
-            <rdf-console-debug>constant</rdf-console-debug>
-        </template>
-    </rdf-matches>
-</rdf-graph>`,
-                output: ``
-            },
-            {
-                should: "Debug with dynamic message",
-                input: `<rdf-graph>
-    <script type="text/turtle"><urn:example:s> <urn:example:p> <urn:example:o> .</script>
-    <rdf-matches data-subject="urn:example:s">
-        <template>
-            <rdf-quad-subject>
-                <rdf-console-debug>
-                    <rdf-value></rdf-value>
-                </rdf-console-debug>
-            </rdf-quad-subject>
-        </template>
-    </rdf-matches>
-</rdf-graph>`,
-                output: ``
-            },
-            {
                 should: "Group",
                 input: `<rdf-graph>
     <script type="text/turtle"><urn:example:s> <urn:example:p> ""^^<urn:example:d> .</script>

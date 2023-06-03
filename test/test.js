@@ -15,6 +15,56 @@ for (const {subject, tests} of suites) {
     }
 }
 
+describe("Console", () => {
+        let actual
+
+        const constant = jasmine.stringMatching("urn:example:s")
+        const context = {
+            asymmetricMatch: actual => "graph" in actual && "context" in actual && "stack" in actual
+        }
+
+        describe("Debug", () => {
+                const emptyMarkup = `<rdf-graph>
+    <script type="text/turtle"></script>
+    <rdf-console-debug></rdf-console-debug>
+</rdf-graph>`
+
+                const staticMarkup = `<rdf-graph>
+    <script type="text/turtle"></script>
+    <rdf-console-debug>urn:example:s</rdf-console-debug>
+</rdf-graph>`
+
+                const dynamicMarkup = `<rdf-graph>
+    <script type="text/turtle"><urn:example:s> <urn:example:p> <urn:example:o> .</script>
+    <rdf-matches data-subject="urn:example:s">
+        <template>
+            <rdf-quad-subject>
+                <rdf-console-debug>
+                    <rdf-value></rdf-value>
+                </rdf-console-debug>
+            </rdf-quad-subject>
+        </template>
+    </rdf-matches>
+</rdf-graph>`
+
+                describe("Empty", () => withSpecs(emptyMarkup, context))
+                describe("Static", () => withSpecs(staticMarkup, constant, context))
+                describe("Dynamic", () => withSpecs(dynamicMarkup, constant, context))
+            }
+        )
+
+        function withSpecs(input, ...spyArgs) {
+            beforeAll(() => {
+                spyOn(console, "debug")
+                actual = transformed(input)
+            })
+
+            it("Output is empty", () => expect(actual).toEqual(jasmine.empty()))
+            it("console.log is called with context", () => expect(console.debug).toHaveBeenCalledOnceWith(...spyArgs))
+        }
+    }
+)
+
 function transformed(input) {
     const container = document.body.appendChild(document.createElement("div"))
     try {
