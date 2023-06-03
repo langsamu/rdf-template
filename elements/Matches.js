@@ -10,17 +10,39 @@ class Matches extends HTMLElement {
         Matches.#CYCLE_MARKER,
         Matches.#CYCLE_MARKER)
 
+    /**
+     * @return {DOMTokenList}
+     */
+    get #groups() {
+        const a = document.createElement("a")
+        a.setAttribute("class", this.dataset.group)
+        return a.classList
+    }
+
     initialize(graph, context, stack) {
+        const distinctQuads = this.#matches(graph, context)
+
+        if (this.dataset.template) {
+            const template = this.ownerDocument.getElementById(this.dataset.template)
+            this.#instantiate(graph, distinctQuads, template, this, stack)
+        } else {
+            for (const template of [...this.getElementsByTagName("TEMPLATE")]) {
+                this.#instantiate(graph, distinctQuads, template, template.parentNode, stack)
+                template.remove()
+            }
+        }
+
+        this.replaceWithMeaningfulChildren()
+    }
+
+    #matches(graph, context) {
         const s = this.#resolve(this.dataset.subject, context)
         const p = this.#resolve(this.dataset.predicate, context)
         const o = this.#resolve(this.dataset.object, context)
         const g = this.#resolve(this.dataset.graph, context)
 
         const quads = graph.match(s, p, o, g)
-
-        const a = document.createElement("a")
-        a.setAttribute("class", this.dataset.group)
-        const groups = a.classList
+        const groups = this.#groups
 
         const groupBySubject = groups.contains("subject")
         const groupByPredicate = groups.contains("predicate")
@@ -39,17 +61,7 @@ class Matches extends HTMLElement {
             distinctQuads.add(q)
         }
 
-        if (this.dataset.template) {
-            const template = this.ownerDocument.getElementById(this.dataset.template)
-            this.#instantiate(graph, distinctQuads, template, this, stack)
-        } else {
-            for (const template of [...this.getElementsByTagName("TEMPLATE")]) {
-                this.#instantiate(graph, distinctQuads, template, template.parentNode, stack)
-                template.remove()
-            }
-        }
-
-        this.replaceWithMeaningfulChildren()
+        return distinctQuads
     }
 
     #instantiate(graph, quads, template, parent, stack) {
