@@ -6,10 +6,9 @@ class Graph extends HTMLElement {
         addEventListener("DOMContentLoaded", this.#onDomContentLoaded.bind(this))
     }
 
-    initialize(){
+    initialize() {
         super.initialize(this.#load(), null, [])
-        const rdf = this.querySelector("script") // TODO: Filter to Turtle
-        rdf.remove()
+        this.#script.remove()
         this.replaceWithMeaningfulChildren()
     }
 
@@ -18,12 +17,14 @@ class Graph extends HTMLElement {
     }
 
     #load() {
-        const rdf = this.querySelector("script").textContent // TODO: Filter to Turtle
-
         const dataset = new N3.Store()
-        dataset.addQuads(new N3.Parser().parse(rdf))
+        dataset.addQuads(new N3.Parser().parse(this.#script.textContent))
 
         return dataset
+    }
+
+    get #script() {
+        return this.querySelector(`script[type="text/turtle"]`)
     }
 }
 
