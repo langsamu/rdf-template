@@ -627,4 +627,54 @@ PREFIX : <urn:example:>
             },
         ]
     },
+    {
+        subject: "If",
+        tests: [
+            {
+                should: "False",
+                input: `<rdf-graph>
+    <script type="text/turtle"><urn:example:s> <urn:example:p> <urn:example:o> .</script>
+    <rdf-if>
+        <script type="application/sparql-query">
+ASK {
+    [ a [] ] .
+}
+        </script>
+        <span>no</span>
+    </rdf-if>
+</rdf-graph>`,
+                output: ``
+            },
+            {
+                should: "True",
+                input: `<rdf-graph>
+    <script type="text/turtle"><urn:example:s> <urn:example:s> <urn:example:s> .</script>
+    <rdf-if>
+        <script type="application/sparql-query">
+ASK {
+    ?s ?p ?o
+}
+        </script>
+        <span>yes</span>
+    </rdf-if>
+</rdf-graph>`,
+                output: `<span>yes</span>`
+            },
+            {
+                should: "False not evaluated",
+                input: `<rdf-graph>
+    <script type="text/turtle"><urn:example:s> <urn:example:s> <urn:example:s> .</script>
+    <rdf-if>
+        <script type="application/sparql-query">
+ASK {
+    [ a [] ] .
+}
+        </script>
+        <rdf-throw data-message="This should not be thrown"></rdf-throw>
+    </rdf-if>
+</rdf-graph>`,
+                output: ``
+            },
+        ]
+    },
 ]
