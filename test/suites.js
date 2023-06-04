@@ -677,4 +677,130 @@ ASK {
             },
         ]
     },
+    {
+        subject: "Element",
+        tests: [
+            {
+                should: "No name",
+                input: `<rdf-graph>
+    <script type="text/turtle"><urn:example:s> <urn:example:p> <urn:example:o> .</script>
+    <rdf-element></rdf-element>
+</rdf-graph>`,
+                output: ``
+            },
+            {
+                should: "Simple",
+                input: `<rdf-graph>
+    <script type="text/turtle"><urn:example:s> <urn:example:p> <urn:example:o> .</script>
+    <rdf-element data-name="b"></rdf-element>
+</rdf-graph>`,
+                output: `<b></b>`
+            },
+            {
+                should: "Namespace",
+                input: `<rdf-graph>
+    <script type="text/turtle"><urn:example:s> <urn:example:p> <urn:example:o> .</script>
+    <rdf-element data-name="b" data-namespace="x"></rdf-element>
+</rdf-graph>`,
+                output: `<b></b>`
+            },
+            {
+                should: "Is",
+                input: `<rdf-graph>
+    <script type="text/turtle"><urn:example:s> <urn:example:p> <urn:example:o> .</script>
+    <rdf-element data-name="div" data-is="test-test">xxx</rdf-element>
+</rdf-graph>`,
+                output: `<div is="test-test">set by custom element</div>`
+            },
+            {
+                should: "Data-driven",
+                input: `<rdf-graph>
+    <script type="text/turtle">
+<urn:example:s>
+    <urn:example:title> "title1" ;
+    <urn:example:body> "body1" ;
+.
+</script>
+   <rdf-element data-name="p">
+        <rdf-attribute data-name="title">
+            <rdf-matches data-subject="{subject}" data-predicate="urn:example:title">
+                <template>
+                    <rdf-quad-object>
+                        <rdf-value></rdf-value>
+                    </rdf-quad-object>
+                </template>
+            </rdf-matches>
+        </rdf-attribute>
+        <rdf-matches data-subject="{subject}" data-predicate="urn:example:body">
+            <template>
+                <rdf-quad-object>
+                    <rdf-value></rdf-value>
+                </rdf-quad-object>
+            </template>
+        </rdf-matches>
+    </rdf-element>
+</rdf-graph>`,
+                output: `<p title="title1">
+        
+        body1
+    </p>`
+            },
+            {
+                should: "SVG",
+                input: `<rdf-graph>
+    <script type="text/turtle">
+<urn:example:s>
+    <urn:example:cx> 150 ;
+    <urn:example:cy> 75 ;
+    <urn:example:r> 50 ;
+.
+</script>
+    <rdf-element data-name="svg" data-namespace="http://www.w3.org/2000/svg">
+        <rdf-element data-name="circle" data-namespace="http://www.w3.org/2000/svg">
+            <rdf-attribute data-name="cx">
+                <rdf-matches data-subject="urn:example:s" data-predicate="urn:example:cx">
+                    <template>
+                        <rdf-quad-object>
+                            <rdf-value></rdf-value>
+                        </rdf-quad-object>
+                    </template>
+                </rdf-matches>
+            </rdf-attribute>
+            <rdf-attribute data-name="cy">
+                <rdf-matches data-subject="urn:example:s" data-predicate="urn:example:cy">
+                    <template>
+                        <rdf-quad-object>
+                            <rdf-value></rdf-value>
+                        </rdf-quad-object>
+                    </template>
+                </rdf-matches>
+            </rdf-attribute>
+            <rdf-attribute data-name="r">
+                <rdf-matches data-subject="urn:example:s" data-predicate="urn:example:r">
+                    <template>
+                        <rdf-quad-object>
+                            <rdf-value></rdf-value>
+                        </rdf-quad-object>
+                    </template>
+                </rdf-matches>
+            </rdf-attribute>
+        </rdf-element>
+    </rdf-element>
+</rdf-graph>`,
+                output: `<svg>
+        <circle cx="150" cy="75" r="50">
+            
+            
+            
+        </circle>
+    </svg>`
+            },
+        ]
+    },
 ]
+
+customElements.define("test-test", class extends HTMLDivElement {
+    connectedCallback() {
+        this.innerText = "set by custom element"
+    }
+}, {extends: "div"})
