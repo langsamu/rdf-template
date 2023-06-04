@@ -1,6 +1,6 @@
 class ConsoleDebug extends HTMLElement {
-    initialize(graph, context, stack) {
-        super.initialize(graph, context, stack)
+    async initialize(graph, context, stack) {
+        await super.initialize(graph, context, stack)
 
         const data = [{graph, context, stack}]
 

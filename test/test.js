@@ -8,8 +8,8 @@ for (const {subject, tests} of suites) {
         for (const {should, input, output} of tests) {
             it(should, pass)
 
-            function pass() {
-                expect(transformed(input)).toEqual(output)
+            async function pass() {
+                await expectAsync(transformed(input)).toBeResolvedTo(output)
             }
         }
     }
@@ -54,9 +54,9 @@ describe("Console", () => {
         )
 
         function withSpecs(input, ...spyArgs) {
-            beforeAll(() => {
+            beforeAll(async () => {
                 spyOn(console, "debug")
-                actual = transformed(input)
+                actual = await transformed(input)
             })
 
             it("Output is empty", () => expect(actual).toEqual(jasmine.empty()))
@@ -65,12 +65,12 @@ describe("Console", () => {
     }
 )
 
-function transformed(input) {
+async function transformed(input) {
     const container = document.body.appendChild(document.createElement("div"))
     try {
         container.innerHTML = input
 
-        container.querySelector("rdf-graph").initialize()
+        await container.querySelector("rdf-graph").initialize()
 
         return container.innerHTML
 

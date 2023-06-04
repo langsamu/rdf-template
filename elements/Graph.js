@@ -6,14 +6,14 @@ class Graph extends HTMLElement {
         addEventListener("DOMContentLoaded", this.#onDomContentLoaded.bind(this))
     }
 
-    initialize() {
-        super.initialize(this.#load(), null, [])
+    async initialize() {
+        await super.initialize(this.#load(), null, [])
         this.#script.remove()
         this.replaceWithMeaningfulChildren()
     }
 
-    #onDomContentLoaded() {
-        this.initialize()
+    async #onDomContentLoaded() {
+        await this.initialize()
     }
 
     #load() {

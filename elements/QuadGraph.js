@@ -1,6 +1,6 @@
 class QuadGraph extends HTMLElement {
-    initialize(graph, context, stack) {
-        super.initialize(graph, context?.graph, stack)
+    async initialize(graph, context, stack) {
+        await super.initialize(graph, context?.graph, stack)
         this.replaceWith(...this.childNodes)
     }
 }

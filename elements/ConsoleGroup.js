@@ -1,5 +1,5 @@
 export class ConsoleGroup extends HTMLElement {
-    initialize(graph, context, stack) {
+    async initialize(graph, context, stack) {
         const data = [{graph, context, stack}]
 
         if (this.dataset.message) {
@@ -8,7 +8,7 @@ export class ConsoleGroup extends HTMLElement {
 
         console.group(...data)
 
-        super.initialize(graph, context, stack)
+        await super.initialize(graph, context, stack)
 
         this.replaceWithMeaningfulChildren()
 

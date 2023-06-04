@@ -19,15 +19,15 @@ class Matches extends HTMLElement {
         return a.classList
     }
 
-    initialize(graph, context, stack) {
+    async initialize(graph, context, stack) {
         const distinctQuads = this.#matches(graph, context)
 
         if (this.dataset.template) {
             const template = this.ownerDocument.getElementById(this.dataset.template)
-            this.#instantiate(graph, distinctQuads, template, this, stack)
+            await this.#instantiate(graph, distinctQuads, template, this, stack)
         } else {
             for (const template of [...this.getElementsByTagName("TEMPLATE")]) {
-                this.#instantiate(graph, distinctQuads, template, template.parentNode, stack)
+                await this.#instantiate(graph, distinctQuads, template, template.parentNode, stack)
                 template.remove()
             }
         }
@@ -64,7 +64,7 @@ class Matches extends HTMLElement {
         return distinctQuads
     }
 
-    #instantiate(graph, quads, template, parent, stack) {
+    async #instantiate(graph, quads, template, parent, stack) {
         for (const quad of quads) {
             const isCycle = Matches.#isCycle(stack, quad)
             let q = quad
@@ -90,7 +90,7 @@ class Matches extends HTMLElement {
                 parent.appendChild(child)
 
                 if (child instanceof Element) {
-                    child.initialize(graph, q, stack)
+                    await child.initialize(graph, q, stack)
                 }
             }
             stack.pop()

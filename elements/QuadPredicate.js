@@ -1,6 +1,6 @@
 class QuadPredicate extends HTMLElement {
-    initialize(graph, context, stack) {
-        super.initialize(graph, context?.predicate, stack)
+    async initialize(graph, context, stack) {
+        await super.initialize(graph, context?.predicate, stack)
         this.replaceWithMeaningfulChildren()
 
     }

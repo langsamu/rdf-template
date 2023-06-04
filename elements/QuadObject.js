@@ -1,6 +1,6 @@
 class QuadObject extends HTMLElement {
-    initialize(graph, context, stack) {
-        super.initialize(graph, context?.object, stack)
+    async initialize(graph, context, stack) {
+        await super.initialize(graph, context?.object, stack)
         this.replaceWithMeaningfulChildren()
     }
 }

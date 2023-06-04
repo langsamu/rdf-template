@@ -1,6 +1,6 @@
-Element.prototype.initialize = function (graph, context, stack) {
+Element.prototype.initialize = async function (graph, context, stack) {
     for (const child of [...this.children]) {
-        child.initialize(graph, context, stack)
+        await child.initialize(graph, context, stack)
     }
 }
 
