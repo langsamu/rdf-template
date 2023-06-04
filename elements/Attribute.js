@@ -3,7 +3,7 @@ class Attribute extends HTMLElement {
         await super.initialize(graph, context, stack)
 
         if (this.dataset.name) {
-            this.parentElement.setAttribute(this.dataset.name, this.innerText)
+            this.parentElement.setAttribute(this.dataset.name, this.innerText.trim())
         }
 
         this.remove()
