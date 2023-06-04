@@ -1,15 +1,46 @@
 import "../index.js"
 import {suites} from "./suites.js"
+import {RdfTemplateUserError} from "../elements/RdfTemplateUserError.js"
 
 for (const {subject, tests} of suites) {
     describe(subject, withSpecs)
 
     function withSpecs() {
-        for (const {should, input, output} of tests) {
+        for (const {should, input, output, error} of tests) {
             it(should, pass)
 
             async function pass() {
-                await expectAsync(transformed(input)).toBeResolvedTo(output)
+                if (error) {
+                    await expectedFailure()
+                } else {
+                    await expectAsync(transformed(input)).toBeResolvedTo(output)
+                }
+            }
+
+            async function expectedFailure() {
+                if (!("name" in error) && !("message" in error)) {
+                    fail("Neither name not message defined on expected error in suite")
+                }
+
+                try {
+                    await transformed(input)
+
+                    fail("Error wasn't thrown")
+
+                } catch (e) {
+                    expect(e).toBeInstanceOf(RdfTemplateUserError)
+                    expect(e.graph).toBeDefined()
+                    expect(e.context).toBeDefined()
+                    expect(e.dataStack).toBeDefined()
+
+                    if ("name" in error) {
+                        expect(e.name).toBe(error.name)
+                    }
+
+                    if ("message" in error) {
+                        expect(e.message).toBe(error.message)
+                    }
+                }
             }
         }
     }

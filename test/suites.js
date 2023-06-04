@@ -590,4 +590,41 @@ PREFIX : <urn:example:>
             },
         ]
     },
+    {
+        subject: "Throw",
+        tests: [
+            {
+                should: "Empty",
+                input: `<rdf-graph>
+    <script type="text/turtle">[a 0] .</script>
+    <rdf-throw></rdf-throw>
+</rdf-graph>`,
+                error: {name: "Error", message: ""}
+            },
+            {
+                should: "Message",
+                input: `<rdf-graph>
+    <script type="text/turtle">[a 0] .</script>
+    <rdf-throw data-message="MESSAGE"></rdf-throw>
+</rdf-graph>`,
+                error: {name: "Error", message: "MESSAGE"}
+            },
+            {
+                should: "Name",
+                input: `<rdf-graph>
+    <script type="text/turtle">[a 0] .</script>
+    <rdf-throw data-name="NAME"></rdf-throw>
+</rdf-graph>`,
+                error: {name: "NAME", message: ""}
+            },
+            {
+                should: "Name & message",
+                input: `<rdf-graph>
+    <script type="text/turtle">[a 0] .</script>
+    <rdf-throw data-name="NAME" data-message="MESSAGE"></rdf-throw>
+</rdf-graph>`,
+                error: {name: "NAME", message: "MESSAGE"}
+            },
+        ]
+    },
 ]
