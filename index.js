@@ -9,8 +9,6 @@ Element.prototype.replaceWithMeaningfulChildren = function () {
     this.replaceWith(...[...this.childNodes].filter(x => x.nodeType !== x.TEXT_NODE || !a.test(x.textContent)))
 }
 
-
-import "https://unpkg.com/n3/browser/n3.min.js"
 import "./elements/Graph.js"
 import "./elements/UriNode.js"
 import "./elements/TermValue.js"
