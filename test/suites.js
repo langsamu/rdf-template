@@ -640,7 +640,9 @@ ASK {
     [ a [] ] .
 }
         </script>
-        <span>no</span>
+        <template>
+            <span>no</span>
+        </template>
     </rdf-if>
 </rdf-graph>`,
                 output: ``
@@ -655,7 +657,9 @@ ASK {
     ?s ?p ?o
 }
         </script>
-        <span>yes</span>
+        <template>
+            <span>yes</span>
+        </template>
     </rdf-if>
 </rdf-graph>`,
                 output: `<span>yes</span>`
@@ -670,10 +674,34 @@ ASK {
     [ a [] ] .
 }
         </script>
-        <rdf-throw data-message="This should not be thrown"></rdf-throw>
+        <template>
+            <rdf-throw data-message="This should not be thrown"></rdf-throw>
+        </template>
     </rdf-if>
 </rdf-graph>`,
                 output: ``
+            },
+            {
+                should: "Script evaluated",
+                input: `<rdf-graph>
+    <script type="text/turtle"><urn:example:s> <urn:example:s> "ask {}" .</script>
+    <rdf-if>
+        <rdf-element data-name="script">
+            <rdf-attribute data-name="type">application/sparql-query</rdf-attribute>
+            <rdf-matches data-subject="urn:example:s">
+                <template>
+                    <rdf-quad-object>
+                        <rdf-value></rdf-value>
+                    </rdf-quad-object>
+                </template>
+            </rdf-matches>
+        </rdf-element>
+        <template>
+            <span>yes</span>
+        </template>
+    </rdf-if>
+</rdf-graph>`,
+                output: `<span>yes</span>`
             },
         ]
     },
