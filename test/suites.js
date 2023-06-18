@@ -703,6 +703,378 @@ ASK {
 </rdf-graph>`,
                 output: `<span>yes</span>`
             },
+            {
+                should: "$this nothing",
+                input: `<rdf-graph>
+    <script type="text/turtle"><urn:example:s> a 0 .</script>
+    <rdf-if>
+        <script type="application/sparql-query">
+            ASK {
+                $this a 0 . # $this is not bound 
+            }
+        </script>
+        <template>
+            <span>yes</span>
+        </template>
+    </rdf-if>
+</rdf-graph>`,
+                output: `<span>yes</span>`
+            },
+            {
+                should: "$this quad",
+                input: `<rdf-graph>
+    <script type="text/turtle"><urn:example:s> a 0 .</script>
+    <rdf-matches>
+        <template>
+            <rdf-if>
+                <script type="application/sparql-query">
+                    ASK {
+                        $this a 0 . # $this is not bound 
+                    }
+                </script>
+                <template>
+                    <span>yes</span>
+                </template>
+            </rdf-if>
+        </template>
+    </rdf-matches>
+</rdf-graph>`,
+                output: `<span>yes</span>`
+            },
+            {
+                should: "$this node true",
+                input: `<rdf-graph>
+    <script type="text/turtle"><urn:example:s> a 0 .</script>
+    <rdf-matches data-subject="urn:example:s">
+        <template>
+            <rdf-quad-subject>
+                <rdf-if>
+                    <script type="application/sparql-query">ASK { $this a 0 . }</script>
+                    <template>
+                        <span>yes</span>
+                    </template>
+                </rdf-if>
+            </rdf-quad-subject>
+        </template>    
+    </rdf-matches>  
+</rdf-graph>`,
+                output: `<span>yes</span>`
+            },
+            {
+                should: "$this node false",
+                input: `<rdf-graph>
+    <script type="text/turtle"><urn:example:s> a "not zero" .</script>
+    <rdf-matches data-subject="urn:example:s">
+        <template>
+            <rdf-quad-subject>
+                <rdf-if>
+                    <script type="application/sparql-query">ASK { $this a 0 . }</script>
+                    <template>
+                        <span>yes</span>
+                    </template>
+                </rdf-if>
+            </rdf-quad-subject>
+        </template>    
+    </rdf-matches>  
+</rdf-graph>`,
+                output: ``
+            },
+            {
+                should: "$thisSubject nothing",
+                input: `<rdf-graph>
+    <script type="text/turtle"><urn:example:s> a 0 .</script>
+    <rdf-if>
+        <script type="application/sparql-query">
+            ASK {
+                $thisSubject a 0 . # $thisSubject not bound
+            }
+        </script>
+        <template>
+            <span>yes</span>
+        </template>
+    </rdf-if>
+</rdf-graph>`,
+                output: `<span>yes</span>`
+            },
+            {
+                should: "$thisSubject node",
+                input: `<rdf-graph>
+    <script type="text/turtle"><urn:example:s> a 0 .</script>
+    <rdf-matches>
+        <template>
+            <rdf-quad-object>
+                <rdf-if>
+                    <script type="application/sparql-query">
+                        ASK {
+                            $thisSubject a 0 . # $thisSubject not bound
+                        }
+                    </script>
+                    <template>
+                        <span>yes</span>
+                    </template>
+                </rdf-if>
+            </rdf-quad-object>
+        </template>    
+    </rdf-matches>  
+</rdf-graph>`,
+                output: `<span>yes</span>`
+            },
+            {
+                should: "$thisSubject quad true",
+                input: `<rdf-graph>
+    <script type="text/turtle"><urn:example:s> a 0 .</script>
+    <rdf-matches>
+        <template>
+            <rdf-if>
+                <script type="application/sparql-query">ASK { $thisSubject a 0 . }</script>
+                <template>
+                    <span>yes</span>
+                </template>
+            </rdf-if>
+        </template>    
+    </rdf-matches>  
+</rdf-graph>`,
+                output: `<span>yes</span>`
+            },
+            {
+                should: "$thisSubject quad false",
+                input: `<rdf-graph>
+    <script type="text/turtle"><urn:example:s> a 1 .</script>
+    <rdf-matches>
+        <template>
+            <rdf-if>
+                <script type="application/sparql-query">ASK { $thisSubject a 0 . }</script>
+                <template>
+                    <span>yes</span>
+                </template>
+            </rdf-if>
+        </template>    
+    </rdf-matches>  
+</rdf-graph>`,
+                output: ``
+            },
+            {
+                should: "$thisPredicate nothing",
+                input: `<rdf-graph>
+    <script type="text/turtle"><urn:example:s> a 0 .</script>
+    <rdf-if>
+        <script type="application/sparql-query">
+            ASK {
+                $thisPredicate a 0 . # $thisPredicate not bound
+            }
+        </script>
+        <template>
+            <span>yes</span>
+        </template>
+    </rdf-if>
+</rdf-graph>`,
+                output: `<span>yes</span>`
+            },
+            {
+                should: "$thisPredicate node",
+                input: `<rdf-graph>
+    <script type="text/turtle"><urn:example:s> a 0 .</script>
+    <rdf-matches>
+        <template>
+            <rdf-quad-object>
+                <rdf-if>
+                    <script type="application/sparql-query">
+                        ASK {
+                            $thisPredicate a 0 . # $thisSubject not bound
+                        }
+                    </script>
+                    <template>
+                        <span>yes</span>
+                    </template>
+                </rdf-if>
+            </rdf-quad-object>
+        </template>    
+    </rdf-matches>  
+</rdf-graph>`,
+                output: `<span>yes</span>`
+            },
+            {
+                should: "$thisPredicate quad true",
+                input: `<rdf-graph>
+    <script type="text/turtle"><urn:example:s> a 0 .</script>
+    <rdf-matches>
+        <template>
+            <rdf-if>
+                <script type="application/sparql-query">ASK { <urn:example:s> $thisPredicate 0 . }</script>
+                <template>
+                    <span>yes</span>
+                </template>
+            </rdf-if>
+        </template>    
+    </rdf-matches>  
+</rdf-graph>`,
+                output: `<span>yes</span>`
+            },
+            {
+                should: "$thisPredicate quad false",
+                input: `<rdf-graph>
+    <script type="text/turtle"><urn:example:s> a 1 .</script>
+    <rdf-matches>
+        <template>
+            <rdf-if>
+                <script type="application/sparql-query">ASK { <urn:example:s> $thisPredicate 0 . }</script>
+                <template>
+                    <span>yes</span>
+                </template>
+            </rdf-if>
+        </template>    
+    </rdf-matches>  
+</rdf-graph>`,
+                output: ``
+            },
+            {
+                should: "$thisObject nothing",
+                input: `<rdf-graph>
+    <script type="text/turtle"><urn:example:s> a 0 .</script>
+    <rdf-if>
+        <script type="application/sparql-query">
+            ASK {
+                $thisObject a 0 . # $thisObject not bound
+            }
+        </script>
+        <template>
+            <span>yes</span>
+        </template>
+    </rdf-if>
+</rdf-graph>`,
+                output: `<span>yes</span>`
+            },
+            {
+                should: "$thisObject node",
+                input: `<rdf-graph>
+    <script type="text/turtle"><urn:example:s> a 0 .</script>
+    <rdf-matches>
+        <template>
+            <rdf-quad-object>
+                <rdf-if>
+                    <script type="application/sparql-query">
+                        ASK {
+                            $thisObject a 0 . # $thisObject not bound
+                        }
+                    </script>
+                    <template>
+                        <span>yes</span>
+                    </template>
+                </rdf-if>
+            </rdf-quad-object>
+        </template>    
+    </rdf-matches>  
+</rdf-graph>`,
+                output: `<span>yes</span>`
+            },
+            {
+                should: "$thisObject quad true",
+                input: `<rdf-graph>
+    <script type="text/turtle"><urn:example:s> a 0 .</script>
+    <rdf-matches>
+        <template>
+            <rdf-if>
+                <script type="application/sparql-query">ASK { <urn:example:s> a $thisObject . }</script>
+                <template>
+                    <span>yes</span>
+                </template>
+            </rdf-if>
+        </template>    
+    </rdf-matches>  
+</rdf-graph>`,
+                output: `<span>yes</span>`
+            },
+            {
+                should: "$thisSubject quad false",
+                input: `<rdf-graph>
+    <script type="text/turtle"><urn:example:s> a 0 .</script>
+    <rdf-matches>
+        <template>
+            <rdf-if>
+                <script type="application/sparql-query">ASK { <urn:example:bogus> a $thisObject . }</script>
+                <template>
+                    <span>yes</span>
+                </template>
+            </rdf-if>
+        </template>    
+    </rdf-matches>  
+</rdf-graph>`,
+                output: ``
+            },
+            {
+                should: "$thisGraph nothing",
+                input: `<rdf-graph>
+    <script type="text/turtle"><urn:example:s> a 0 .</script>
+    <rdf-if>
+        <script type="application/sparql-query">
+            ASK {
+                $thisGraph a 0 . # $thisGraph not bound
+            }
+        </script>
+        <template>
+            <span>yes</span>
+        </template>
+    </rdf-if>
+</rdf-graph>`,
+                output: `<span>yes</span>`
+            },
+            {
+                should: "$thisGraph node",
+                input: `<rdf-graph>
+    <script type="text/turtle"><urn:example:s> a 0 .</script>
+    <rdf-matches>
+        <template>
+            <rdf-quad-object>
+                <rdf-if>
+                    <script type="application/sparql-query">
+                        ASK {
+                            $thisGraph a 0 . # $thisGraph not bound
+                        }
+                    </script>
+                    <template>
+                        <span>yes</span>
+                    </template>
+                </rdf-if>
+            </rdf-quad-object>
+        </template>    
+    </rdf-matches>  
+</rdf-graph>`,
+                output: `<span>yes</span>`
+            },
+            {
+                should: "$thisGraph quad true",
+                input: `<rdf-graph>
+    <script type="text/turtle"><urn:example:g> { <urn:example:g> a 0 . }</script>
+    <rdf-matches>
+        <template>
+            <rdf-if>
+                <script type="application/sparql-query">ASK { GRAPH $thisGraph { $thisGraph a 0 . } }</script>
+                <template>
+                    <span>yes</span>
+                </template>
+            </rdf-if>
+        </template>    
+    </rdf-matches>  
+</rdf-graph>`,
+                output: `<span>yes</span>`
+            },
+            {
+                should: "$thisGraph quad false",
+                input: `<rdf-graph>
+    <script type="text/turtle"><urn:example:g> { <urn:example:g> a 1 . }</script>
+    <rdf-matches>
+        <template>
+            <rdf-if>
+                <script type="application/sparql-query">ASK { GRAPH $thisGraph { ?thisGraph a 0 . } }</script>
+                <template>
+                    <span>yes</span>
+                </template>
+            </rdf-if>
+        </template>    
+    </rdf-matches>  
+</rdf-graph>`,
+                output: ``
+            },
         ]
     },
     {
