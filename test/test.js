@@ -1,6 +1,6 @@
 import "../index.js"
 import {suites} from "./suites.js"
-import {RdfTemplateUserError} from "../elements/RdfTemplateUserError.js"
+import {RdfTemplateUserError} from "../RdfTemplateUserError.js"
 
 for (const {subject, tests} of suites) {
     describe(subject, withSpecs)

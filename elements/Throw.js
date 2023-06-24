@@ -1,4 +1,4 @@
-import {RdfTemplateUserError} from "./RdfTemplateUserError.js"
+import {RdfTemplateUserError} from "../RdfTemplateUserError.js"
 
 class Throw extends HTMLElement {
     initialize(graph, context, stack) {

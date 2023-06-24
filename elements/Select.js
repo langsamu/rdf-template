@@ -1,4 +1,4 @@
-import {Comunica} from "./Comunica.js"
+import {Comunica} from "../Comunica.js"
 import {Sparql} from "./Sparql.js"
 
 class Select extends Sparql {

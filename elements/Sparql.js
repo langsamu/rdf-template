@@ -1,6 +1,6 @@
 import {Templated} from "./Templated.js"
-import {ContextQuadThisBinding} from "./ContextQuadThisBinding.js"
-import {ContextNodeThisBinding} from "./ContextNodeThisBinding.js"
+import {ContextQuadThisBinding} from "../ContextQuadThisBinding.js"
+import {ContextNodeThisBinding} from "../ContextNodeThisBinding.js"
 
 export class Sparql extends Templated {
     prebind(comunicaContext, graph, context) {
