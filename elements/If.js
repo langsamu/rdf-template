@@ -1,13 +1,15 @@
 import {Comunica} from "./Comunica.js"
+import {Templated} from "./Templated.js"
+import {ContextQuadThisBinding} from "./ContextQuadThisBinding.js"
+import {ContextNodeThisBinding} from "./ContextNodeThisBinding.js"
 
-class If extends HTMLElement {
+class If extends Templated {
     async initialize(graph, context, stack) {
         await super.initialize(graph, context, stack)
 
         if (await this.#ask(graph, context)) {
-            await this.#instantiate(graph, context, stack)
             this.#script.remove()
-            this.replaceWithMeaningfulChildren()
+            await this.instantiateTemplates(graph, context, stack, null)
         } else {
             this.remove()
         }
@@ -27,56 +29,8 @@ class If extends HTMLElement {
         return await new Comunica.QueryEngine().queryBoolean(this.#script.textContent, comunicaContext)
     }
 
-    async #instantiate(graph, context, stack) {
-        for (const template of [...this.getElementsByTagName("TEMPLATE")]) {
-            for (const child of [...template.content.cloneNode(true).childNodes]) {
-                this.parentNode.appendChild(child)
-
-                if (child instanceof Element) {
-                    await child.initialize(graph, context, stack)
-                }
-            }
-            template.remove()
-        }
-    }
-
     get #script() {
         return this.querySelector(`script[type="application/sparql-query"]`)
-    }
-}
-
-class ContextNodeThisBinding {
-    #context
-
-    constructor(context) {
-        this.#context = context
-    }
-
-    get(variable) {
-        if (variable.value === "this") {
-            return this.#context
-        }
-    }
-}
-
-class ContextQuadThisBinding {
-    #context
-
-    constructor(context) {
-        this.#context = context
-    }
-
-    get(variable) {
-        switch (variable.value) {
-            case "thisSubject":
-                return this.#context.subject
-            case "thisPredicate":
-                return this.#context.predicate
-            case "thisObject":
-                return this.#context.object
-            case "thisGraph":
-                return this.#context.graph
-        }
     }
 }
 
