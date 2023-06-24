@@ -1197,6 +1197,130 @@ ASK {
             },
         ]
     },
+    {
+        subject: "Construct",
+        tests: [
+            {
+                should: "x",
+                input: `<rdf-graph>
+    <script type="text/turtle"><urn:example:s> <urn:example:p> 0, 1 .</script>
+    <rdf-construct>
+        <script type="application/sparql-query">CONSTRUCT { ?s ?p ?o .} WHERE { ?s ?p ?o . }</script>
+        <table>
+            <template>
+                <tr>
+                    <td>
+                        <rdf-quad-subject>
+                            <rdf-value></rdf-value>
+                        </rdf-quad-subject>
+                    </td>
+                    <td>
+                        <rdf-quad-predicate>
+                            <rdf-value></rdf-value>
+                        </rdf-quad-predicate>
+                    </td>
+                    <td>
+                        <rdf-quad-object>
+                            <rdf-value></rdf-value>
+                        </rdf-quad-object>
+                    </td>
+                </tr>
+            </template>
+        </table>
+    </rdf-construct>
+</rdf-graph>`,
+                output: `<table>
+            
+        
+                <tr>
+                    <td>
+                        urn:example:s
+                    </td>
+                    <td>
+                        urn:example:p
+                    </td>
+                    <td>
+                        0
+                    </td>
+                </tr>
+            
+                <tr>
+                    <td>
+                        urn:example:s
+                    </td>
+                    <td>
+                        urn:example:p
+                    </td>
+                    <td>
+                        1
+                    </td>
+                </tr>
+            </table>`
+            },
+        ]
+    },
+    {
+        subject: "Select",
+        tests: [
+            {
+                should: "x",
+                input: `<rdf-graph>
+    <script type="text/turtle"><urn:example:s> <urn:example:p> 0, 1 .</script>
+    <rdf-select>
+        <script type="application/sparql-query">SELECT ?s ?p ?o WHERE { ?s ?p ?o . }</script>
+        <table>
+            <template>
+                <tr>
+                    <td>
+                        <rdf-binding data-name="s">
+                            <rdf-value></rdf-value>
+                        </rdf-binding>
+                    </td>
+                    <td>
+                        <rdf-binding data-name="p">
+                            <rdf-value></rdf-value>
+                        </rdf-binding>
+                    </td>
+                    <td>
+                        <rdf-binding data-name="o">
+                            <rdf-value></rdf-value>
+                        </rdf-binding>
+                    </td>
+                </tr>
+            </template>
+        </table>
+    </rdf-select>
+</rdf-graph>`,
+                output: `<table>
+            
+        
+                <tr>
+                    <td>
+                        urn:example:s
+                    </td>
+                    <td>
+                        urn:example:p
+                    </td>
+                    <td>
+                        0
+                    </td>
+                </tr>
+            
+                <tr>
+                    <td>
+                        urn:example:s
+                    </td>
+                    <td>
+                        urn:example:p
+                    </td>
+                    <td>
+                        1
+                    </td>
+                </tr>
+            </table>`
+            },
+        ]
+    },
 ]
 
 customElements.define("test-test", class extends HTMLDivElement {
